@@ -1,0 +1,5 @@
+// Middleware function
+const myMiddleware = (req, res, next) => {
+    console.log('This is my middleware');
+    next(); // Pass control to the next middleware function
+};
