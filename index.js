@@ -40,14 +40,9 @@
 const express = require("express");
 require('dotenv').config();
 const mongoose = require("mongoose");
-const bodyParser = require('body-parser');
 const router = require('./routes/route');
-const route = express.Router()
 const app = express();
 const port = process.env.PORT || 2000;
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 const uri = process.env.uri;
 mongoose.connect(uri);
@@ -67,7 +62,7 @@ app.get('/', (req, res) => {
 });
 
 // Mount router middleware
-app.route('/api', router);
+app.use('/api', router);
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);

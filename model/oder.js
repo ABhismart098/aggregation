@@ -2,10 +2,6 @@ const { default: mongoose } = require('mongoose');
 const Mongoose = require('mongoose');
 
 const data = new Mongoose.Schema({
-    id: {
-        type: String,
-        required: true
-    },
     product:{
         type: String,
         required: true
@@ -18,7 +14,7 @@ const data = new Mongoose.Schema({
         type: Number,
         required: true
     },
-    age:{
+    Quantity:{
         type: Number,
         required: true
     }

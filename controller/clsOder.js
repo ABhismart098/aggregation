@@ -1,23 +1,27 @@
 const data_model = require('../model/oder')
 
-const order = async(req,res)=>{
-    try{
+const order = async (req, res) => {
+    try {
         const { id, product, Brand, price, Quantity } = req.body;
         const newData = new data_model({
             id,
             product,
             Brand,
             price,
-            age
-        })
-        await newData.save();
+            Quantity
+        });
 
-    }catch (errorbp ){
+        // Use a different variable name for the result of newData.save()
+        const savedData = await newData.save();
+
+        // Return the savedData in the response instead of reusing res
+        return res.status(200).json(savedData);
+    } catch (error) {
         console.error('Error creating data:', error);
-        res.status(500).json({ error: 'An error occurred while creating data' });
-
+        return res.status(500).json({ error: 'An error occurred while creating data' });
     }
-}
+};
+
  const showOder = async (req,res) =>{
     try{
         const allData = await order.find();
@@ -38,9 +42,10 @@ const aggreApi = async (req, res) => {
         const pipeline = [
             {
                 $group: {
-                    _id: '$Brand', // Group by the Brand field
-                    averageAge: { $avg: '$age' } // Calculate the average age for each Brand
-                }
+                    _id: "$Brand",
+                    totalQuantity: { $sum: "$Quantity" },
+                    totalPrice: { $sum: "$price" },
+                },
             },
             {
                 $sort: { averageAge: 1 } // Sort by averageAge in ascending order
@@ -48,7 +53,7 @@ const aggreApi = async (req, res) => {
         ];
 
         // Execute the aggregation pipeline
-        const aggregatedData = await DataModel.aggregate(pipeline);
+        const aggregatedData = await data_model.aggregate(pipeline);
 
         // Send the aggregated results as a response
         res.json(aggregatedData);
