@@ -61,7 +61,7 @@ app.get('/', (req, res) => {
     res.status(200).json({ message: "hello, I'm still online. If you need anything, feel free to ask." });
 });
 
-// Mount router middleware
+// Mount router middleware (here we need to add app.use instead router.use)
 app.use('/api', router);
 
 app.listen(port, () => {
